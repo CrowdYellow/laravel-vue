@@ -21,6 +21,9 @@
                         <a href="#" @click="changeNavIndex(index)">{{ item.name }}</a>
                     </li>
                 </ul>
+                <div class="navbar-right">
+                    <TheEntry/>
+                </div>
             </div>
         </div>
     </div>
@@ -33,9 +36,12 @@ import {
 import {
     fetch
 } from "../../axios";
-
+import TheEntry from '@/components/layouts/TheEntry'
 export default {
     name: 'TheHeader',
+    components: {
+        TheEntry
+    },
     data() {
         return {
             logo: {
