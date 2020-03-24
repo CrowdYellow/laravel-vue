@@ -3,64 +3,100 @@
         <div class="col-md-4 col-md-offset-4 floating-box">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <ul class="nav nav-tabs nav-justified">
-                        <li
-                                role="presentation"
-                                v-for="(item, index) in step"
-                                :class="{ active: index === activeNavIndex }"
-                        >
-                            <a href="javascript:return false;">{{ item }}</a>
-                        </li>
-                    </ul>
+                    <h3>请注册</h3>
                 </div>
 
-                <div class="panel-body" v-if="activeNavIndex === 0">
-                    <div class="form-group">
-                        <label class="control-label">手机号</label>
-                        <input type="text" class="form-control" v-model="form.phone" placeholder="请输入手机号">
-                    </div>
-                    <button type="submit" class="btn btn-lg btn-success btn-block" @click="getCaptcha">
-                        <i class="fa fa-btn fa-sign-in"></i> 获取图片验证码
-                    </button>
-                </div>
-
-                <div class="panel-body" v-if="activeNavIndex === 1">
-                    <div class="form-group">
-                        <label class="control-label">图片验证码</label>
-                        <input v-model="form.captcha_code" type="text" class="form-control" placeholder="请填写验证码">
-                    </div>
-                    <div class="thumbnail" title="点击图片重新获取验证码">
-                        <div class="captcha"><img :src="img" alt="点击图片重新获取验证码"></div>
-                    </div>
-                    <button type="submit" class="btn btn-lg btn-success btn-block" @click="getVerificationCodes">
-                        <i class="fa fa-btn fa-sign-in"></i> 填写用户信息
-                    </button>
-                </div>
-
-                <div class="panel-body" v-if="activeNavIndex === 2">
+                <div class="panel-body">
                     <div class="form-group">
                         <label class="control-label">用户名</label>
-                        <input type="text" v-model="form.name" class="form-control" placeholder="请填写用户名">
+                        <input
+                                v-validator:input.required="{ regex: /^[a-zA-Z]+\w*\s?\w*$/, error: '用户名要求以字母开头的单词字符' }"
+                                type="text"
+                                class="form-control"
+                                placeholder="请填写用户名"
+                                v-model="form.name"
+                        >
                     </div>
                     <div class="form-group">
                         <label class="control-label">手机号</label>
-                        <input type="text" v-model="form.phone" class="form-control" placeholder="请填写手机号">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <input
+                                        v-validator:input.required="{ regex: /^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199)\d{8}$/, error: '手机号格式不对' }"
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="请输入手机号"
+                                        v-model="form.phone"
+                                >
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="button" class="btn btn-primary" @click="getCaptcha">
+                                    获取验证码
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label">验证码</label>
-                        <input type="text" v-model="form.verification_code" class="form-control" placeholder="请填写手机验证码">
+                        <input
+                                v-validator.required="{ title: '请填写手机验证码' }"
+                                v-model="form.verification_code"
+                                type="text"
+                                class="form-control"
+                                placeholder="请填写手机验证码"
+                        >
                     </div>
                     <div class="form-group">
                         <label class="control-label">密码</label>
-                        <input type="text" v-model="form.password" class="form-control" placeholder="请填写密码">
+                        <input
+                                id="password"
+                                v-validator.required="{ regex: /^\w{6,16}$/, error: '密码要求 6 ~ 16 个单词字符' }"
+                                v-model="form.password"
+                                type="password"
+                                class="form-control"
+                                placeholder="请填写密码"
+                        >
                     </div>
                     <div class="form-group">
                         <label class="control-label">确认密码</label>
-                        <input type="text" v-model="form.password" class="form-control" placeholder="请再次输入密码">
+                        <input
+                                v-validator.required="{ target: '#password' }"
+                                v-model="form.password_confirmation"
+                                type="password"
+                                class="form-control"
+                                placeholder="请再次输入密码"
+                        >
                     </div>
                     <button type="submit" class="btn btn-lg btn-success btn-block" @click="userRegister">
-                        <i class="fa fa-btn fa-sign-in"></i> 提交信息
+                        提交信息
                     </button>
+                </div>
+            </div>
+            <div v-if="captcha.isShow" class="top-up">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">获取手机验证码</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="control-label">图片验证码</label>
+                                <input v-validator.required="{ title: '图片验证码' }" v-model="form.captcha_code" type="text" class="form-control" placeholder="请填写验证码">
+                            </div>
+                            <div class="thumbnail" title="点击图片重新获取验证码">
+                                <div class="captcha">
+                                    <img :src="captcha.img" alt="点击图片重新获取验证码" @click="getCaptcha">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @click="captcha.isShow = false">关闭</button>
+                            <button type="button" class="btn btn-primary" @click="getVerificationCodes">获取手机验证码</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,7 +117,6 @@ export default {
     name: 'Register',
     data () {
         return {
-            activeNavIndex: 0,
             step: [
                 '第一步：填写手机号',
                 '第二步：输入手机验证码',
@@ -94,17 +129,25 @@ export default {
                 verification_key: '',
                 verification_code: '',
                 name: '',
-                password: ''
+                password: '',
+                password_confirmation: ''
             },
-            img: ''
+            captcha: {
+                isShow: false,
+                img: ''
+            },
+
         }
     },
     methods: {
         getCaptcha () {
+            if (!this.form.phone) {
+                return false;
+            }
             post(FRONTEND_CAPTCHA, this.form).then(response => {
                 this.form.captcha_key = response.captcha_key
-                this.img = response.captcha_image_content
-                this.activeNavIndex = 1
+                this.captcha.img = response.captcha_image_content
+                this.captcha.isShow = true
                 console.log(response);
             }).catch(err => {
                 console.log(response);
@@ -113,7 +156,7 @@ export default {
         getVerificationCodes () {
             post(FRONTEND_VERIFICATION, this.form).then(response => {
                 this.form.verification_key = response.key;
-                this.activeNavIndex = 2;
+                this.captcha.isShow = false;
                 console.log(response);
             }).catch(err => {
                 console.log(response);
@@ -148,4 +191,17 @@ export default {
         width: 100%;
         height: 100%;
     }}
+    .top-up {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: block;
+        overflow: hidden;
+        -webkit-overflow-scrolling: touch;
+        outline: 0;
+        transition: opacity .15s linear;
+        background-color: rgba(0,0,0,.3);
+    }
 </style>
