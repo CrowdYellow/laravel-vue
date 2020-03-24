@@ -142,6 +142,7 @@ export default {
     methods: {
         getCaptcha () {
             if (!this.form.phone) {
+                alert('请填写手机号');
                 return false;
             }
             post(FRONTEND_CAPTCHA, this.form).then(response => {
@@ -154,6 +155,10 @@ export default {
             })
         },
         getVerificationCodes () {
+            if (!this.form.captcha_code) {
+                alert('请填写图片验证码');
+                return false
+            }
             post(FRONTEND_VERIFICATION, this.form).then(response => {
                 this.form.verification_key = response.key;
                 this.captcha.isShow = false;
@@ -163,6 +168,10 @@ export default {
             })
         },
         userRegister () {
+            if (!this.form.name || !this.form.phone || !this.form.verification_code || !this.form.password || !this.form.password_confirmation) {
+                alert('请将信息补充完整');
+                return false;
+            }
             post(FRONTEND_REGISTER, this.form).then(response => {
                 console.log(response);
             }).catch(err => {
