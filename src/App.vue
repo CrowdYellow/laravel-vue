@@ -3,14 +3,6 @@
     <TheHeader/>
     <router-view/>
   </div>
-<!--  <div id="app">-->
-<!--    <TheHeader/>-->
-<!--&lt;!&ndash;    <div id="nav">&ndash;&gt;-->
-<!--&lt;!&ndash;      <router-link to="/">Home</router-link> |&ndash;&gt;-->
-<!--&lt;!&ndash;      <router-link to="/about">About</router-link>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--    <router-view/>-->
-<!--  </div>-->
 </template>
 
 <script>

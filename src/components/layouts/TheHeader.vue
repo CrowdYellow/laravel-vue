@@ -2,10 +2,25 @@
     <div class="navbar navbar-default topnav">
         <div class="container">
             <div class="navbar-header">
+                <button type="button" class="navbar-toggle" @click="toggleNav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
                 <router-link to="/" class="navbar-brand">
-                    <img :src="logo.src" :alt="logo.title">
+                    <img src="../../assets/icon.png" :alt="logo.title">
                     <span class="title">{{ logo.title }}</span>
                 </router-link>
+            </div>
+
+            <div id="top-navbar-collapse" :class="['collapse', 'navbar-collapse', { in: showCollapsedNav }]">
+                <ul class="nav navbar-nav">
+                    <li v-for="(item, index) in navList" :class="{ active: index === activeNavIndex }">
+                        <a href="#" @click="changeNavIndex(index)">{{ item }}</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -17,13 +32,23 @@ export default {
     data() {
         return {
             logo: {
-                src: `${this.uploadsUrl}Treasure/blob/master/icon.png?raw=true`,
                 title: 'HQ-BLOG'
-            }
+            },
+            navList: ['社区', '头条', '问答', '教程'],
+            activeNavIndex: 0,
+            showCollapsedNav: false
         }
     },
     beforeCreate() {
-        this.uploadsUrl = 'https://github.com/CrowdYellow/'
+
+    },
+    methods: {
+        changeNavIndex(index) {
+            this.activeNavIndex = index
+        },
+        toggleNav() {
+            this.showCollapsedNav = !this.showCollapsedNav
+        }
     }
 }
 </script>
@@ -31,5 +56,7 @@ export default {
 <style scoped>
 .title {
     color: #1b1a1a;
+    display: none;
 }
+.navbar-default .navbar-nav > .active > a { background: rgba(0,0,0,.03);}
 </style>
