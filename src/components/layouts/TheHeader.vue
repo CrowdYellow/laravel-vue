@@ -31,11 +31,8 @@
 
 <script>
 import {
-    FRONTEND_CATEGORY
-} from "../../axios/api";
-import {
-    fetch
-} from "../../axios";
+    getCategory
+} from "../../axios/call";
 import TheEntry from '@/components/layouts/TheEntry'
 export default {
     name: 'TheHeader',
@@ -57,7 +54,7 @@ export default {
     },
     methods: {
         getCat () {
-            fetch(FRONTEND_CATEGORY).then(response => {
+            getCategory().then(response => {
                 this.navList = response;
             }).catch(err => {
                 console.log(response);

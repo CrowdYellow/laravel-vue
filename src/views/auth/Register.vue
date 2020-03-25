@@ -105,13 +105,11 @@
 
 <script>
 import {
-    post
-} from "../../axios";
-import {
-    FRONTEND_CAPTCHA,
-    FRONTEND_REGISTER,
-    FRONTEND_VERIFICATION
-} from "../../axios/api";
+    getPicVerificationCodes,
+    getPhoneVerificationCodes,
+    register,
+    login
+} from "../../axios/call";
 
 export default {
     name: 'Register',
@@ -136,7 +134,7 @@ export default {
                 isShow: false,
                 img: ''
             },
-
+            user: {}
         }
     },
     methods: {
@@ -145,12 +143,14 @@ export default {
                 alert('请填写手机号');
                 return false;
             }
-            post(FRONTEND_CAPTCHA, this.form).then(response => {
+            getPicVerificationCodes(this.form).then(response => {
+                this.form.captcha_code = ''
                 this.form.captcha_key = response.captcha_key
                 this.captcha.img = response.captcha_image_content
                 this.captcha.isShow = true
                 console.log(response);
             }).catch(err => {
+                this.getCaptcha()
                 console.log(response);
             })
         },
@@ -159,7 +159,7 @@ export default {
                 alert('请填写图片验证码');
                 return false
             }
-            post(FRONTEND_VERIFICATION, this.form).then(response => {
+            getPhoneVerificationCodes(this.form).then(response => {
                 this.form.verification_key = response.key;
                 this.captcha.isShow = false;
                 console.log(response);
@@ -172,7 +172,15 @@ export default {
                 alert('请将信息补充完整');
                 return false;
             }
-            post(FRONTEND_REGISTER, this.form).then(response => {
+            register(this.form).then(response => {
+                console.log(response);
+                this.userLogin()
+            }).catch(err => {
+                console.log(response);
+            })
+        },
+        userLogin () {
+            login(this.form).then(response => {
                 console.log(response);
             }).catch(err => {
                 console.log(response);
