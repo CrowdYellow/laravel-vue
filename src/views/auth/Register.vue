@@ -1,6 +1,7 @@
 <template>
     <div class="row">
         <div class="col-md-4 col-md-offset-4 floating-box">
+            <Message :show.sync="msgShow" :type="msgType" :msg="msg"/>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3>请注册</h3>
@@ -135,13 +136,17 @@ export default {
                 isShow: false,
                 img: ''
             },
-            user: {}
+            user: {},
+            msg: '',
+            msgType: '',
+            msgShow: false
         }
     },
     methods: {
+        // 根据手机号获取验证码
         getCaptcha () {
             if (!this.form.phone) {
-                alert('请填写手机号');
+                this.showMsg('请填写手机号');
                 return false;
             }
             getPicVerificationCodes(this.form).then(response => {
@@ -149,28 +154,28 @@ export default {
                 this.form.captcha_key = response.captcha_key
                 this.captcha.img = response.captcha_image_content
                 this.captcha.isShow = true
-                console.log(response);
             }).catch(err => {
-                this.getCaptcha()
-                console.log(response);
+                this.showMsg('手机号有误');
+                console.log(err);
             })
         },
+        // 获取手机验证码
         getVerificationCodes () {
             if (!this.form.captcha_code) {
-                alert('请填写图片验证码');
+                this.showMsg('请填写图片验证码');
                 return false
             }
             getPhoneVerificationCodes(this.form).then(response => {
                 this.form.verification_key = response.key;
                 this.captcha.isShow = false;
-                console.log(response);
             }).catch(err => {
-                console.log(response);
+                this.getCaptcha()
+                console.log(err);
             })
         },
         userRegister () {
             if (!this.form.name || !this.form.phone || !this.form.verification_code || !this.form.password || !this.form.password_confirmation) {
-                alert('请将信息补充完整');
+                this.showMsg('请将信息补充完整');
                 return false;
             }
             register(this.form).then(response => {
@@ -184,6 +189,7 @@ export default {
                 }
                 this.userLogin()
             }).catch(err => {
+                this.showMsg('请重新填写');
                 console.log(response);
             })
         },
@@ -197,8 +203,18 @@ export default {
                 } else {
                     ls.setItem('token', token)
                 }
+                this.showMsg('注册成功', 'success');
             }).catch(err => {
                 console.log(response);
+            })
+        },
+        showMsg(msg, type = 'warning') {
+            this.msg = msg;
+            this.msgType = type;
+            this.msgShow = false;
+
+            this.$nextTick(() => {
+                this.msgShow = true
             })
         }
     }
