@@ -28,6 +28,12 @@ const actions = {
   theToken({ commit }, token) {
     if (token) commit('UPDATE_TOKEN', token);
     router.push('/')
+  },
+  logout({ commit }) {
+    commit('UPDATE_TOKEN', {
+      access_token: ''
+    })
+    router.push({ name: 'Home', params: { logout: true } })
   }
 };
 

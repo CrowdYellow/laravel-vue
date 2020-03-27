@@ -2,16 +2,16 @@
     <div class="navbar-right">
         <ul v-if="token.access_token" class="nav navbar-nav github-login">
             <li>
-                <a href="javascript:;">
-          <span v-if="user">
-            <img v-if="user.avatar" :src="user.avatar" class="avatar-topnav">
-            <span v-if="user.name">{{ user.name }}</span>
-          </span>
+                <a v-dropdown href="javascript:;">
+                    <span v-if="user">
+                        <img v-if="user.avatar" :src="user.avatar" class="avatar-topnav">
+                        <span v-if="user.name">{{ user.name }}</span>
+                    </span>
                     <span v-else>佚名</span>
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-sign-out text-md"></i>退出</a></li>
+                    <li><a href="javascript:;" @click="logout"><i class="fa fa-sign-out text-md"></i>退出</a></li>
                 </ul>
             </li>
         </ul>
@@ -19,7 +19,7 @@
             <a href="#" class="btn btn-default login-btn">
                 <i class="fa fa-user"></i> 登 录
             </a>
-            <router-link to="/auth/register" class="btn btn-default login-btn">
+            <router-link :to="{ name: 'Register' }" class="btn btn-default login-btn">
                 <i class="fa fa-user-plus"></i> 注 册
             </router-link>
         </div>
@@ -35,6 +35,11 @@ export default {
             'token',
             'user'
         ])
+    },
+    methods: {
+        logout() {
+            this.$store.dispatch('logout')
+        }
     }
 }
 </script>
