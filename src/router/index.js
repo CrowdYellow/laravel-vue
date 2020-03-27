@@ -8,7 +8,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('../views/Home')
   },
   {
     path: '/about',
@@ -22,6 +22,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: () => import('@/views/auth/Register')
+  },
+  {
+    path: '*',
+    // 重定向
+    redirect: '/'
   }
 ]
 
@@ -30,5 +35,14 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+router.beforeEach((to, from, next) => {
+  const auth = router.app.$options.store.state.token.access_token
+
+  if (auth && (to.path.indexOf('register') !== -1 || to.path.indexOf('login') !== -1)) {
+    next('/')
+  } else {
+    next()
+  }
+});
 
 export default router
