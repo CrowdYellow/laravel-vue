@@ -111,7 +111,6 @@ import {
     register,
     login
 } from "../../axios/call";
-import ls from '../../utils/localStorage'
 
 export default {
     name: 'Register',
@@ -173,19 +172,20 @@ export default {
                 console.log(err);
             })
         },
+        // 用户注册
         userRegister () {
             if (!this.form.name || !this.form.phone || !this.form.verification_code || !this.form.password || !this.form.password_confirmation) {
                 this.showMsg('请将信息补充完整');
                 return false;
             }
             register(this.form).then(response => {
-                let localUser = ls.getItem('user')
+                let localUser = this.$store.state.user;
                 if (localUser) {
                     if (localUser.name !== response.name) {
-                        ls.setItem('user', response)
+                        this.$store.dispatch('login', response)
                     }
                 } else {
-                    ls.setItem('user', response)
+                    this.$store.dispatch('login', response)
                 }
                 this.userLogin()
             }).catch(err => {
@@ -193,15 +193,16 @@ export default {
                 console.log(response);
             })
         },
+        // 用户登录
         userLogin () {
             login(this.form).then(response => {
-                let token = ls.getItem('token');
+                let token = this.$store.state.token;
                 if (token) {
                     if (token.access_token !== response.access_token) {
-                        ls.setItem('token', token)
+                        this.$store.dispatch('theToken', response)
                     }
                 } else {
-                    ls.setItem('token', token)
+                    this.$store.dispatch('theToken', response)
                 }
                 this.showMsg('注册成功', 'success');
             }).catch(err => {
