@@ -16,20 +16,6 @@ export default {
       msgShow: false // 是否显示消息，默认不显示
     }
   },
-  beforeRouteEnter(to, from, next) {
-    const fromName = from.name
-    console.log(from);
-
-    next(vm => {
-      if (vm.$store.state.token.access_token) {
-        switch (fromName) {
-          case 'Register':
-            vm.showMsg('注册成功');
-            break
-        }
-      }
-    })
-  },
   methods: {
     showMsg(msg, type = 'success') {
       this.msg = msg
