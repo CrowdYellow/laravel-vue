@@ -205,6 +205,7 @@ export default {
                     this.$store.dispatch('theToken', response)
                 }
                 this.showMsg('注册成功', 'success');
+                router.push({ name: 'Home' })
             }).catch(err => {
                 console.log(response);
             })

@@ -38,3 +38,9 @@ export function register(data) {
 export function login(data) {
     return post(FRONTEND_LOGIN, data)
 }
+// 获取用户登录信息
+export function userInfo(token) {
+    return fetch(FRONTEND_USER, {}, {
+        Authorization: 'Bearer ' + token
+    })
+}
