@@ -110,6 +110,7 @@ import {
     register,
     login
 } from "../../axios/call";
+import ls from '../../utils/localStorage'
 
 export default {
     name: 'Register',
@@ -173,7 +174,14 @@ export default {
                 return false;
             }
             register(this.form).then(response => {
-                console.log(response);
+                let localUser = ls.getItem('user')
+                if (localUser) {
+                    if (localUser.name !== response.name) {
+                        ls.setItem('user', response)
+                    }
+                } else {
+                    ls.setItem('user', response)
+                }
                 this.userLogin()
             }).catch(err => {
                 console.log(response);
@@ -181,7 +189,14 @@ export default {
         },
         userLogin () {
             login(this.form).then(response => {
-                console.log(response);
+                let token = ls.getItem('token');
+                if (token) {
+                    if (token.access_token !== response.access_token) {
+                        ls.setItem('token', token)
+                    }
+                } else {
+                    ls.setItem('token', token)
+                }
             }).catch(err => {
                 console.log(response);
             })
