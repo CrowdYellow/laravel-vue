@@ -62,6 +62,7 @@ export default {
                 } else {
                     this.$store.dispatch('login', response)
                 }
+                this.$message.show('修改成功')
             }).catch(err => {
                 console.log(err);
             })

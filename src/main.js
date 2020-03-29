@@ -6,6 +6,9 @@ import store from './store'
 import './directives'
 import './components'
 import VueSweetalert2 from './plugins/vue-sweetalert2'
+import Message from './plugins/message'
+
+Vue.use(Message)
 
 Vue.config.productionTip = false
 Vue.use(VueSweetalert2)
