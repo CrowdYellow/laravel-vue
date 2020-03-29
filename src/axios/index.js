@@ -32,9 +32,11 @@ export function post(url, data ,header={} ) {
     })
 }
 
-export function patch(url, data = {}) {
+export function patch(url, data = {}, header = {}) {
     return new Promise((resolve, reject) => {
-        axios.patch(`${domain}${suffix}${url}`, data)
+        axios.patch(`${domain}${suffix}${url}`, data, {
+            headers:header
+        })
             .then(response => {
                 resolve(response.data);
             }, err => {
@@ -43,9 +45,11 @@ export function patch(url, data = {}) {
     })
 }
 
-export function put(url, data = {}) {
+export function put(url, data = {}, header = {}) {
     return new Promise((resolve, reject) => {
-        axios.put(`${domain}${suffix}${url}`, data)
+        axios.put(`${domain}${suffix}${url}`, data, {
+            headers:header
+        })
             .then(response => {
                 resolve(response.data);
             }, err => {
@@ -54,9 +58,11 @@ export function put(url, data = {}) {
     })
 }
 
-export function destroy(url, data = {}) {
+export function destroy(url, data = {}, header = {}) {
     return new Promise((resolve, reject) => {
-        axios.delete(`${domain}${suffix}${url}`, data)
+        axios.delete(`${domain}${suffix}${url}`, data, {
+            headers:header
+        })
             .then(response => {
                 resolve(response.data);
             }, err => {

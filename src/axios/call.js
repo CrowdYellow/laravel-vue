@@ -38,9 +38,15 @@ export function register(data) {
 export function login(data) {
     return post(FRONTEND_LOGIN, data)
 }
-// 获取用户登录信息
+// 获取登录用户信息
 export function userInfo(token) {
     return fetch(FRONTEND_USER, {}, {
+        Authorization: 'Bearer ' + token
+    })
+}
+// 修改用户名
+export function updateUsername(token, data) {
+    return patch(FRONTEND_USER, data, {
         Authorization: 'Bearer ' + token
     })
 }

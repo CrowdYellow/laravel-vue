@@ -12,7 +12,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const auth = router.app.$options.store.state.token.access_token
 
-  if (auth && (to.path.indexOf('register') !== -1 || to.path.indexOf('login') !== -1)) {
+  if ((auth && (to.path.indexOf('register') !== -1 || to.path.indexOf('login') !== -1)) || (!auth && to.meta.auth)) {
     next('/')
   } else {
     next()

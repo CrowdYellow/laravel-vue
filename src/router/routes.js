@@ -26,6 +26,14 @@ export default [
     {
         path: '/users/:id/edit',
         name: 'EditUsers',
-        component: () => import('@/views/users/Edit')
+        component: () => import('@/views/users/Edit'),
+        children: [
+            {
+                path: '',
+                name: 'EditProfile',
+                component: () => import('@/views/users/Profile.vue'),
+                meta: { auth: true }
+            }
+        ]
     },
 ]
