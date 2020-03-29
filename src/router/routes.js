@@ -23,4 +23,9 @@ export default [
         name: 'Login',
         component: () => import('@/views/auth/Login')
     },
+    {
+        path: '/users/:id/edit',
+        name: 'EditUsers',
+        component: () => import('@/views/users/Edit')
+    },
 ]
