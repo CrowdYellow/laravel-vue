@@ -16,5 +16,7 @@ export const FRONTEND_TOPICS = 'topics';
 export const FRONTEND_COMMENTS = 'comments';
 // 当前登录用户信息
 export const FRONTEND_USER = 'user';
+// 修改密码
+export const FRONTEND_UPDATE_PASSWORD = 'user/password'
 // 分类列表
 export const FRONTEND_CATEGORY = 'categories';

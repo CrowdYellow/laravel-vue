@@ -10,10 +10,15 @@ const router = new VueRouter({
   routes
 })
 router.beforeEach((to, from, next) => {
-  const auth = router.app.$options.store.state.token.access_token
+  const app = router.app
+  const store = app.$options.store
+  const auth = store.state.token.access_token
 
-  if ((auth && (to.path.indexOf('register') !== -1 || to.path.indexOf('login') !== -1)) || (!auth && to.meta.auth)) {
-    next('/')
+  app.$message.hide()
+  if (!auth && to.meta.auth) {
+    next({name: 'Login'})
+  } else if (auth && (to.path.indexOf('register') !== -1 || to.path.indexOf('login') !== -1)) {
+    next({name: 'Home'})
   } else {
     next()
   }

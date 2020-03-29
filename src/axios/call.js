@@ -15,6 +15,7 @@ import {
     FRONTEND_TOPICS,
     FRONTEND_COMMENTS,
     FRONTEND_USER,
+    FRONTEND_UPDATE_PASSWORD,
     FRONTEND_CATEGORY,
 } from "./api";
 
@@ -47,6 +48,12 @@ export function userInfo(token) {
 // 修改用户名
 export function updateUsername(token, data) {
     return patch(FRONTEND_USER, data, {
+        Authorization: 'Bearer ' + token
+    })
+}
+// 修改密码
+export function updatePassword(token, data) {
+    return patch(FRONTEND_UPDATE_PASSWORD, data, {
         Authorization: 'Bearer ' + token
     })
 }
